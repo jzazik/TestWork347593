@@ -10,13 +10,35 @@ const store = createStore({
     return {
       modalName: "",
       users: [],
+      user: null,
+      mode: "",
     };
   },
   actions: {
+    async editUser({ commit }, form) {
+      const { data } = await $http.put("users/" + form.id, form);
+      commit("SET_MODAL_NAME", "");
+      commit("SET_USERS", data.data);
+    },
     async addUser({ commit }, form) {
       const { data } = await $http.post("users", form);
       this.dispatch("closeModal");
       commit("ADD_USER", data.data);
+      commit("SET_USER", null);
+    },
+    async removeUser({ commit }, user) {
+      const { data } = await $http.delete("users/" + user.id);
+      commit("SET_USERS", data.data);
+    },
+    editUserInit({ commit }, user) {
+      commit("SET_MODE", "edit");
+      commit("SET_USER", { ...user });
+      this.dispatch("setModalName", "addUser");
+    },
+    addUserInit({ commit }) {
+      commit("SET_USER", null);
+      commit("SET_MODE", "add");
+      this.dispatch("setModalName", "addUser");
     },
     setModalName({ commit }, name) {
       commit("SET_MODAL_NAME", name);
@@ -38,6 +60,12 @@ const store = createStore({
     },
     SET_USERS(state, data) {
       state.users = data;
+    },
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    SET_MODE(state, mode) {
+      state.mode = mode;
     },
   },
 });

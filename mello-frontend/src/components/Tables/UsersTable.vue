@@ -10,8 +10,8 @@
         {{ user.email }}
       </td>
       <td class="w-px whitespace-nowrap py-2 px-2 text-xs italic">
-        <button class="button mr-2">Edit</button>
-        <button class="button">Delete</button>
+        <button class="button mr-2" @click="edit(user)">Edit</button>
+        <button class="button" @click="remove(user)">Delete</button>
       </td>
     </tr>
   </v-table>
@@ -35,6 +35,14 @@ export default {
   computed: {
     users() {
       return this.$store.state.users;
+    },
+  },
+  methods: {
+    edit(user) {
+      this.$store.dispatch("editUserInit", user);
+    },
+    remove(user) {
+      this.$store.dispatch("removeUser", user);
     },
   },
   async created() {

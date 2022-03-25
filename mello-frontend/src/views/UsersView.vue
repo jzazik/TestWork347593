@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     addUser() {
-      this.$store.dispatch("setModalName", "addUser");
+      this.$store.dispatch("addUserInit");
     },
   },
 };

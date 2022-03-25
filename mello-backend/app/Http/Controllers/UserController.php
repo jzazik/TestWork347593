@@ -32,15 +32,15 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
-        return response()->json('Product updated!');
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return UserResource::collection(User::all());
     }
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
-        return response()->json('Product deleted!');
+        $user = User::findOrFail($id);
+        $user->delete();
+        return UserResource::collection(User::all());
     }
 }
